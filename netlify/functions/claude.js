@@ -27,7 +27,7 @@ exports.handler = async function(event, context) {
   try {
     const body = JSON.parse(event.body);
     const payload = JSON.stringify({
-      model: body.model || "claude-opus-4-5",
+      model: "claude-haiku-4-5-20251001",
       max_tokens: body.max_tokens || 1000,
       system: body.system,
       messages: body.messages,
@@ -54,19 +54,3 @@ exports.handler = async function(event, context) {
             reject(new Error("Failed to parse: " + raw));
           }
         });
-      });
-      req.on("error", reject);
-      req.write(payload);
-      req.end();
-    });
-
-    if (data.status !== 200) {
-      return { statusCode: data.status, headers, body: JSON.stringify({ error: data.body }) };
-    }
-
-    return { statusCode: 200, headers, body: JSON.stringify(data.body) };
-
-  } catch (err) {
-    return { statusCode: 500, headers, body: JSON.stringify({ error: err.message }) };
-  }
-};
