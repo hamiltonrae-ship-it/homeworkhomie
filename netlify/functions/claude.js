@@ -42,3 +42,31 @@ exports.handler = async function(event, context) {
           "Content-Type": "application/json",
           "Content-Length": Buffer.byteLength(payload),
           "x-api-key": process.env.ANTHROPIC_API_KEY,
+          "anthropic-version": "2023-06-01",
+        },
+      }, (res) => {
+        let raw = "";
+        res.on("data", (chunk) => (raw += chunk));
+        res.on("end", () => {
+          try {
+            resolve({ status: res.statusCode, body: JSON.parse(raw) });
+          } catch (e) {
+            reject(new Error("Failed to parse: " + raw));
+          }
+        });
+      });
+      req.on("error", reject);
+      req.write(payload);
+      req.end();
+    });
+
+    if (data.status !== 200) {
+      return { statusCode: data.status, headers, body: JSON.stringify({ error: data.body }) };
+    }
+
+    return { statusCode: 200, headers, body: JSON.stringify(data.body) };
+
+  } catch (err) {
+    return { statusCode: 500, headers, body: JSON.stringify({ error: err.message }) };
+  }
+};
