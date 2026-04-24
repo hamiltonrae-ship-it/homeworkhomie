@@ -203,6 +203,131 @@ body{font-family:'Nunito',sans-serif;min-height:100vh;background:linear-gradient
 ::-webkit-scrollbar{width:6px;}
 ::-webkit-scrollbar-thumb{background:rgba(0,0,0,0.12);border-radius:10px;}
 
+/* ── MOBILE OPTIMIZATIONS ── */
+@media (max-width: 600px) {
+  body{padding-bottom:90px;}
+  .wrap{padding:14px 12px;}
+
+  /* header */
+  .header-logo strong{font-size:22px;}
+  .tagline{font-size:12px;}
+
+  /* star bar */
+  .star-bar{padding:10px 14px;gap:8px;}
+  .rank-emoji{font-size:26px;}
+  .rank-name{font-size:14px;}
+  .star-count{font-size:12px;}
+
+  /* grade pills */
+  .grade-pill{padding:6px 10px;font-size:12px;}
+  .pill-label{font-size:12px;}
+  .pill-soon,.pill-live{font-size:8px;}
+
+  /* subject grid - single column on small phones */
+  .subject-grid{grid-template-columns:1fr 1fr;gap:10px;}
+  .subject-card{padding:18px 10px 14px;}
+  .subject-card .sc-emoji{font-size:34px;margin-bottom:6px;}
+  .subject-card .sc-name{font-size:16px;}
+
+  /* topic action buttons - 2x2 grid stays but smaller */
+  .topic-actions{gap:10px;}
+  .topic-action-btn{padding:16px 10px 14px;border-radius:18px;}
+  .tab-icon{font-size:28px;}
+  .tab-label{font-size:15px;}
+  .tab-sub{font-size:10px;}
+
+  /* facts */
+  .facts-panel{padding:16px;}
+  .facts-title{font-size:18px;}
+  .fact-card p{font-size:13px;}
+  .action-row{grid-template-columns:1fr 1fr;gap:8px;}
+  .btn{padding:12px;font-size:15px;}
+
+  /* quiz */
+  .q-text{font-size:16px !important;}
+  .opt{font-size:13px;padding:11px 12px;}
+  .opt-letter{width:28px;height:28px;font-size:13px;}
+  .next-btn{font-size:18px;padding:14px;}
+
+  /* score screen */
+  .score-trophy{font-size:60px;}
+  .score-title{font-size:24px;}
+  .score-num{font-size:34px;}
+  .score-btns{flex-direction:column;gap:10px;}
+  .btn-retry,.btn-back-study,.btn-share{width:100%;padding:13px;}
+
+  /* row cards */
+  .row-card{padding:13px 14px;}
+  .rc-name{font-size:15px !important;}
+
+  /* subtopic rows */
+  .subtopic-row{padding:12px 14px;}
+  .subtopic-row-name{font-size:14px;}
+  .str-btn{padding:8px 8px;font-size:13px;}
+
+  /* content items */
+  .ci-name{font-size:14px;}
+
+  /* home hero */
+  .home-tagline-big{font-size:26px;}
+  .home-sub{font-size:13px;}
+  .home-features{grid-template-columns:1fr 1fr;gap:8px;}
+  .home-feat{padding:9px 10px;}
+  .home-feat span{font-size:18px;}
+  .home-feat strong{font-size:12px;}
+  .home-feat small{font-size:10px;}
+  .parent-body{font-size:12px;}
+  .parent-stat strong{font-size:20px;}
+
+  /* back button */
+  .back-btn{font-size:12px;padding:6px 14px 6px 10px;}
+
+  /* FAB */
+  .buddy-fab{width:56px;height:56px;font-size:24px;bottom:18px;right:16px;}
+
+  /* CHAT PANEL — full screen on mobile */
+  .chat-panel{
+    height:100dvh !important;
+    height:100vh !important;
+    border-radius:0 !important;
+    left:0 !important;
+    transform:none !important;
+    width:100% !important;
+    max-width:100% !important;
+  }
+  .chat-header{padding:14px 16px;padding-top:max(14px, env(safe-area-inset-top));}
+  .chat-msgs{padding:12px;}
+  .chat-input-row{
+    padding:10px 12px;
+    padding-bottom:max(10px, env(safe-area-inset-bottom));
+  }
+  .chat-input{font-size:16px !important;} /* prevents iOS zoom on focus */
+  .chat-send{width:44px;height:44px;font-size:18px;}
+  .msg-bubble{font-size:14px;padding:10px 14px;}
+
+  /* welcome modal */
+  .modal-card{padding:24px 18px;border-radius:22px;}
+  .modal-title{font-size:22px;}
+  .modal-features{grid-template-columns:1fr 1fr;}
+
+  /* loading card */
+  .loading-card{padding:36px 20px;}
+  .loading-card p{font-size:19px;}
+
+  /* section header */
+  .sec-head h2{font-size:20px;}
+  .subtopic-section-label{font-size:17px;}
+}
+
+/* Extra small phones */
+@media (max-width: 380px) {
+  .subject-grid{grid-template-columns:1fr 1fr;gap:8px;}
+  .subject-card .sc-name{font-size:14px;}
+  .topic-action-btn{padding:14px 8px 12px;}
+  .tab-label{font-size:14px;}
+  .grade-pill{padding:5px 8px;font-size:11px;}
+}
+
 /* ── WELCOME MODAL ── */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:800;display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeIn .25s ease both;}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
@@ -1678,7 +1803,7 @@ async function startQuiz(){
       signal: controller.signal,
       headers:{"Content-Type":"application/json"},
       body:JSON.stringify({
-        model:"claude-sonnet-4-20250514",
+        model:"claude-opus-4-5",
         max_tokens:1000,
         system:`You are a quiz generator for elementary school kids. Given a topic name and facts, generate exactly 4 multiple choice questions.\nReturn ONLY a valid JSON array, no preamble, no markdown, no backticks. Each item must have:\n- "question": kid-friendly question string\n- "options": array of exactly 4 short answer strings\n- "correct": index 0-3 of the correct answer\n- "explanation": 1-2 sentence friendly explanation\nKeep language simple for a 4th grader.`,
         messages:[{role:"user",content:`Topic: ${sub.name}\n\nFacts:\n${sub.facts.map((f,i)=>`${i+1}. ${f}`).join("\n")}`}]
@@ -1785,7 +1910,7 @@ async function sendMsg(){
       signal:controller.signal,
       headers:{"Content-Type":"application/json"},
       body:JSON.stringify({
-        model:"claude-sonnet-4-20250514",max_tokens:1000,
+        model:"claude-opus-4-5",max_tokens:1000,
         system:"You are Homework Homie, a friendly and encouraging AI tutor for elementary school kids. Your name is Homie. You help kids learn step by step, never just giving answers. You are warm, patient, and use simple language a kid can understand. Use emojis to make things fun. Always break things into small steps. Encourage them when they try. Never do their homework for them but always help them think through it. Keep responses short and digestible for kids.",
         messages:state.chatMsgs.map(m=>({role:m.role,content:m.content}))
       })
